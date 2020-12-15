@@ -10,6 +10,7 @@ public class GameHandler : MonoBehaviour
     public List<GameObject> objPrefabs;
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI gameOverText;
+    public GameObject titleScreen;
     public Button resetButton;
 
     public bool isGameActive = true;
@@ -20,11 +21,7 @@ public class GameHandler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(SpawnObj());
-        score = 0;
-        UpdateScore(0);
-        gameOverText.gameObject.SetActive(false);
-        resetButton.gameObject.SetActive(false);
+       
     }
 
     // Update is called once per frame
@@ -63,5 +60,16 @@ public class GameHandler : MonoBehaviour
     public void ResetGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void StartGame(int diff)
+    {
+        spawnRate /= diff;
+        StartCoroutine(SpawnObj());
+        score = 0;
+        UpdateScore(0);
+        gameOverText.gameObject.SetActive(false);
+        resetButton.gameObject.SetActive(false);
+        titleScreen.SetActive(false);
     }
 }
