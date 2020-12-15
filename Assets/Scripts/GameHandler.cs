@@ -2,11 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameHandler : MonoBehaviour
 {
     public List<GameObject> objPrefabs;
     public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI gameOverText;
+    public Button resetButton;
+
+    public bool isGameActive = true;
 
     private float spawnRate = 2.5f;
     private int score;
@@ -17,6 +23,8 @@ public class GameHandler : MonoBehaviour
         StartCoroutine(SpawnObj());
         score = 0;
         UpdateScore(0);
+        gameOverText.gameObject.SetActive(false);
+        resetButton.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -27,7 +35,7 @@ public class GameHandler : MonoBehaviour
 
     IEnumerator SpawnObj()
     {
-        while (true)
+        while (isGameActive)
         {
             yield return new WaitForSeconds(spawnRate);
             int index = Random.Range(0, objPrefabs.Count);
@@ -43,5 +51,17 @@ public class GameHandler : MonoBehaviour
             score = 0;
         }
         scoreText.text = "Score: " + score;
+    }
+
+    public void GameOver()
+    {
+        gameOverText.gameObject.SetActive(true);
+        resetButton.gameObject.SetActive(true);
+        isGameActive = false;
+    }
+
+    public void ResetGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
